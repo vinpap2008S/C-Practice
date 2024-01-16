@@ -2,7 +2,7 @@
 #include <string>
 
 using namespace std;
-
+/*
 int main() {
     string task;
     cout << "Введите задачу: ";
@@ -33,3 +33,4 @@ int main() {
 
     return 0;
 }
+*/
