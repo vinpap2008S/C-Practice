@@ -51,15 +51,23 @@ public:
 	}
 
 	void remove(T key) {
-		List* p = searchParent(key);
-		if (p == nullptr) {
-			delete[]a;
+		List* prev = nullptr;
+		List* current = next;
+		while (current != nullptr) {
+			if (current->elem == key) {
+				if (prev == nullptr) {
+					next = current->next;
+				}
+				else {
+					prev->next = current->next;
+				}
+				delete current;
+				return;
+			}
+			prev = current;
+			current = current->next;
 		}
-		else {
-			List* a = p->next;
-			p->next = a->next;
-			delete[]a;
-		}
+		return;
 	}
 
 	template <typename T>
