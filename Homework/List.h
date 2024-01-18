@@ -51,22 +51,14 @@ public:
 	}
 
 	void remove(T key) {
-		List* prev = nullptr;
-		List* current = next;
-		while (current != nullptr) {
-			if (current->elem == key) {
-				if (prev == nullptr) {
-					next = current->next;
-				}
-				else {
-					prev->next = current->next;
-				}
-				delete current;
-				return;
-			}
-			prev = current;
-			current = current->next;
+		List* prev = searchParent(key);
+		List* current = search(key);
+		if (prev == nullptr) {
 		}
+		else {
+			prev->next = current->next;
+		}
+		delete current;
 		return;
 	}
 

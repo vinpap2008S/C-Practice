@@ -9,7 +9,7 @@ int main(int argc, char** argv) {
 		List<int>::prepend(head, new List<int>(i));
 		cout << (*head);
 	}
-	head->remove(2);
+	head->remove(1);
 	List<int>* me = head;
 	cout << "Found! \n";
 	cout << (*me);
