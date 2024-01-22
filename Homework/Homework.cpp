@@ -3,7 +3,7 @@
 #include <string>
 
 using namespace std;
-
+/*
 int main() {
     list<string> todoList; // список для хранения дел
     list<string> archiveList; // список для хранения выполненных дел
@@ -85,4 +85,4 @@ int main() {
     } while (choice != 0);
 
     return 0;
-}
+}*/
