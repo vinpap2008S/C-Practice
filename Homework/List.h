@@ -1,77 +1,60 @@
-#pragma once
 #include <iostream>
+
 using namespace std;
 
 template <typename T>
-class List {
-	T elem;
-	List* next;
+class Node {
 public:
-	List(T useful) : elem(useful) { next = nullptr; }
+    T value;
+    Node* left;
+    Node* right;
 
-	// List<int> *head = new List<int>(8);
-	// (*head).prepend(new List(8));
-	// head->prepend(new List(8))
-	// 7->X   должно стать: 8->7->X;
-
-	static void prepend(List*& h, List* el) {
-		// Считается, что el уже создан!
-		el->next = h;
-		h = el;
-	}
-	/* СПИСОК МАТЕРНЫХ СЛОВ ПРОГРАММИРОВАНИЯ
-	goto
-	break
-	continue
-	*/
-
-
-	List* search(T key) {
-		List* p = this;
-		while ((p != nullptr) && (p->elem != key)) {
-			// В C++ реализованы "ленивые вычисления": если в первой скобке false,
-			// вторая НЕ ВЫЧИСЛЯЕТСЯ!
-			cout << (*p);
-			cout << "My elem is " << p->elem << ", key is " << key << "\n";
-			p = p->next;  // Присваиваем "бегунку" указатель на следующий элемент,
-		}                 // который хранится в поле next того объекта, на который
-		return p;         // p указывает СЕЙЧАС - прыжок!
-	}
-
-	List* searchParent(T key) {
-		List* p = this,
-			* parent = nullptr;
-		while ((p != nullptr) && (p->elem != key)) {
-			cout << (*p);
-			cout << "My elem is " << p->elem << ", key is " << key << "\n";
-			parent = p;
-			p = p->next;
-		}
-		return parent;
-	}
-
-	void remove(T key) {
-		List* prev = searchParent(key);
-		List* current = search(key);
-		if (prev == nullptr) {
-		}
-		else {
-			prev->next = current->next;
-		}
-		delete current;
-		return;
-	}
-
-	template <typename T>
-	friend ostream& operator<<(ostream& out, const List<T>& el) {
-		out << el.elem << "->";
-		if (el.next == nullptr) {
-			out << "X\n";
-		}
-		else {
-			out << (*el.next);
-		}
-		return out;
-	}
+    Node(T value) : value(value), left(nullptr), right(nullptr) {}
 };
+void printIndent(int level) {
+    for (int i = 0; i < level; i++) {
+        cout << "    ";
+    }
+}
+template <typename T>
+void printTree(Node<T>* node, int level = 0) {
+    if (node == nullptr) {
+        return;
+    }
 
+    printTree(node->right, level + 1);
+
+    printIndent(level);
+    cout << node->value << endl;
+
+    printTree(node->left, level + 1);
+}
+template <typename T>
+Node<T>* insertNode(Node<T>* node, T value) {
+    if (node == nullptr) {
+        return new Node<T>(value);
+    }
+
+    if (value < node->value) {
+        node->left = insertNode(node->left, value);
+    }
+    else if (value > node->value) {
+        node->right = insertNode(node->right, value);
+    }
+
+    return node;
+}
+
+int main() {
+    Node<int>* root = nullptr;
+    root = insertNode(root, 5);
+    root = insertNode(root, 3);
+    root = insertNode(root, 7);
+    root = insertNode(root, 1);
+    root = insertNode(root, 4);
+    root = insertNode(root, 6);
+    root = insertNode(root, 8);
+    printTree(root);
+
+    return 0;
+}
