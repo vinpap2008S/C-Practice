@@ -2,18 +2,18 @@
 #include <string>
 #include <cstdlib>
 #include <ctime>
-
+using namespace std;
 class Monster {
 private:
-    std::string name;
-    std::string weapon1;
-    std::string weapon2;
+    string name;
+    string weapon1;
+    string weapon2;
 
 public:
-    Monster(std::string n, std::string w1, std::string w2) : name(n), weapon1(w1), weapon2(w2) {}
+    Monster(string n, string w1, string w2) : name(n), weapon1(w1), weapon2(w2) {}
 
     void attack(Monster& other) {
-        std::cout << name << " attacks with " << weapon1 << " and " << weapon2 << std::endl;
+        cout << name << " attacks with " << weapon1 << " and " << weapon2 << endl;
         // реализация атаки
     }
 
@@ -33,14 +33,14 @@ int main() {
 
     while (!monster1.isDefeated() && !monster2.isDefeated()) {
         attacker->attack(*defender);
-        std::swap(attacker, defender);
+        swap(attacker, defender);
     }
 
     if (monster1.isDefeated()) {
-        std::cout << "Monster2 wins!" << std::endl;
+        cout << "Monster2 wins!" << endl;
     }
     else {
-        std::cout << "Monster1 wins!" << std::endl;
+        cout << "Monster1 wins!" << endl;
     }
 
     return 0;
