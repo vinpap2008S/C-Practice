@@ -1,28 +1,48 @@
 #include <iostream>
-#include "List.h"
+#include <list>
+#include <set>
+#include <random>
+#include <ctime>
+#include <chrono>
+
 using namespace std;
 
 int main() {
-    Tree myTree;
+    list<int> myList;
+    set<int> myTree;
 
-    myTree.insert(50);
-    myTree.insert(30);
-    myTree.insert(70);
-    myTree.insert(20);
-    myTree.insert(40);
-    myTree.insert(60);
-    myTree.insert(80);
+    // Заполнение списка и дерева случайными числами
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> dis(1, 1000000);
 
-    myTree.print();
-
-    int searchValue = 40;
-    TreeNode* searchResult = myTree.search(searchValue);
-    if (searchResult != nullptr) {
-        cout << "Node with value " << searchValue << " found in the tree." << endl;
+    for (int i = 0; i < 1000000; ++i) {
+        int num = dis(gen);
+        myList.push_back(num);
+        myTree.insert(num);
     }
-    else {
-        cout << "Node with value " << searchValue << " not found in the tree." << endl;
+
+    // Поиск в списке
+    int searchNum = dis(gen);
+
+    auto start = chrono::high_resolution_clock::now();
+    for (const auto& num : myList) {
+        if (num == searchNum) {
+            break;
+        }
     }
+    auto end = chrono::high_resolution_clock::now();
+
+    chrono::duration<double> duration = end - start;
+    cout << "Search in list: " << duration.count() << " seconds" << endl;
+
+    // Поиск в дереве
+    start = chrono::high_resolution_clock::now();
+    myTree.find(searchNum);
+    end = chrono::high_resolution_clock::now();
+
+    duration = end - start;
+    cout << "Search in tree: " << duration.count() << " seconds" << endl;
 
     return 0;
 }
