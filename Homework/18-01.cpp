@@ -6,7 +6,7 @@
 #include <chrono>
 
 using namespace std;
-
+/*
 int main() {
     list<int> myList;
     set<int> myTree;
@@ -45,4 +45,4 @@ int main() {
     cout << "Search in tree: " << duration.count() << " seconds" << endl;
 
     return 0;
-}
+}*/

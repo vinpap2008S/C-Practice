@@ -1,75 +1,47 @@
 ﻿#include <iostream>
-#include <list>
-using namespace std;
+#include <string>
+#include <cstdlib>
+#include <ctime>
 
-class Weapon
-{
-protected:
-	int damage;
-	int shootCount;
-	int maxAmmo;
+class Monster {
+private:
+    std::string name;
+    std::string weapon1;
+    std::string weapon2;
+
 public:
+    Monster(std::string n, std::string w1, std::string w2) : name(n), weapon1(w1), weapon2(w2) {}
 
-	Weapon(int damage, int shootCount, int maxAmmo) : damage(damage), shootCount(shootCount), maxAmmo(maxAmmo) {}
-	int shoot()
-	{
-		if (shootCount > 0) {
-			shootCount--;
-			return damage;
-		}
-		if (shootCount == 0)
-			return -1;
-		else
-		{
-			return damage;
-		}
+    void attack(Monster& other) {
+        std::cout << name << " attacks with " << weapon1 << " and " << weapon2 << std::endl;
+        // реализация атаки
+    }
 
-	}
+    bool isDefeated() {
+        return weapon1.empty() && weapon2.empty();
+    }
 };
-class Blaster : public Weapon {
-public:
-	Blaster() : Weapon(10, -1, 6) {}
-};
-class Pistol : public Weapon {
-public:
-	Pistol() : Weapon(20, 6, 6) {}
-};
-class MachineGun : public Weapon {
-public:
-	MachineGun() : Weapon(5, 100, 100) {}
-};
-/*
-int main()
-{
-	list<Weapon*> weapons;
-	Blaster* blaster = new Blaster();
-	Pistol* pistol = new Pistol();
-	MachineGun* machineGun = new MachineGun();
 
-	weapons.push_back(blaster);
-	weapons.push_back(pistol);
-	weapons.push_back(machineGun);
-	while (weapons.size()>1)
-	{
-		for (Weapon* weapon : weapons) {
-			if (weapon->shoot() != -1)
-				cout << "Damage: " << weapon->shoot() << endl;
-			else
-				delete weapon;
-		}
-		cout << endl;
-	}
+int main() {
+    srand(time(0));
 
+    Monster monster1("Monster1", "Axe", "Sword");
+    Monster monster2("Monster2", "Club", "Bow");
 
-	for (Weapon* weapon : weapons) {
-		cout << "Damage: " << weapon->shoot() << endl;
-	}
+    Monster* attacker = &monster1;
+    Monster* defender = &monster2;
 
+    while (!monster1.isDefeated() && !monster2.isDefeated()) {
+        attacker->attack(*defender);
+        std::swap(attacker, defender);
+    }
 
-	for (Weapon* weapon : weapons) {
-		delete weapon;
-	}
+    if (monster1.isDefeated()) {
+        std::cout << "Monster2 wins!" << std::endl;
+    }
+    else {
+        std::cout << "Monster1 wins!" << std::endl;
+    }
 
-	return 0;
+    return 0;
 }
-*/
