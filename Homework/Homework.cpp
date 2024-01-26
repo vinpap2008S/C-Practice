@@ -1,88 +1,75 @@
 ﻿#include <iostream>
 #include <list>
-#include <string>
-
 using namespace std;
+
+class Weapon
+{
+protected:
+	int damage;
+	int shootCount;
+	int maxAmmo;
+public:
+
+	Weapon(int damage, int shootCount, int maxAmmo) : damage(damage), shootCount(shootCount), maxAmmo(maxAmmo) {}
+	int shoot()
+	{
+		if (shootCount > 0) {
+			shootCount--;
+			return damage;
+		}
+		if (shootCount == 0)
+			return -1;
+		else
+		{
+			return damage;
+		}
+
+	}
+};
+class Blaster : public Weapon {
+public:
+	Blaster() : Weapon(10, -1, 6) {}
+};
+class Pistol : public Weapon {
+public:
+	Pistol() : Weapon(20, 6, 6) {}
+};
+class MachineGun : public Weapon {
+public:
+	MachineGun() : Weapon(5, 100, 100) {}
+};
 /*
-int main() {
-    list<string> todoList; // список для хранения дел
-    list<string> archiveList; // список для хранения выполненных дел
-    setlocale(LC_ALL, "ru");
-    int choice;
-    string task;
+int main()
+{
+	list<Weapon*> weapons;
+	Blaster* blaster = new Blaster();
+	Pistol* pistol = new Pistol();
+	MachineGun* machineGun = new MachineGun();
 
-    do {
-        // Вывод меню пользователя
-        cout << "Меню:\n";
-        cout << "1. Добавить дело\n";
-        cout << "2. Дело выполнено\n";
-        cout << "3. Отобразить список дел\n";
-        cout << "4. Отобразить отчёт\n";
-        cout << "0. Выход\n";
-        cout << "Выберите действие: ";
-        cin >> choice;
+	weapons.push_back(blaster);
+	weapons.push_back(pistol);
+	weapons.push_back(machineGun);
+	while (weapons.size()>1)
+	{
+		for (Weapon* weapon : weapons) {
+			if (weapon->shoot() != -1)
+				cout << "Damage: " << weapon->shoot() << endl;
+			else
+				delete weapon;
+		}
+		cout << endl;
+	}
 
-        switch (choice) {
-        case 1:
-            cout << "Введите новое дело: ";
-            cin.ignore(); // Игнорируем символ новой строки после ввода числа
-            getline(cin, task); // Читаем всю строку включая пробелы
-            todoList.push_back(task); // Добавляем дело в конец списка
-            break;
-        case 2:
-            if (todoList.empty()) {
-                cout << "Список дел пуст!\n";
-            }
-            else {
-                cout << "Введите номер выполненного дела: ";
-                int index;
-                cin >> index;
-                if (index >= 1 && index <= todoList.size()) {
-                    auto it = todoList.begin();
-                    advance(it, index - 1); // Перемещаем итератор на нужную позицию
-                    archiveList.push_back(*it); // Перемещаем дело в архив
-                    todoList.erase(it); // Удаляем дело из списка
-                    cout << "Дело успешно перемещено в архив!\n";
-                }
-                else {
-                    cout << "Неверный номер дела!\n";
-                }
-            }
-            break;
-        case 3:
-            if (todoList.empty()) {
-                cout << "Список дел пуст!\n";
-            }
-            else {
-                cout << "Список дел:\n";
-                int i = 1;
-                for (const auto& task : todoList) {
-                    cout << i << ". " << task << "\n";
-                    i++;
-                }
-            }
-            break;
-        case 4:
-            if (archiveList.empty()) {
-                cout << "Отчёт пуст!\n";
-            }
-            else {
-                cout << "Отчёт (список выполненных дел):\n";
-                int i = 1;
-                for (const auto& task : archiveList) {
-                    cout << i << ". " << task << "\n";
-                    i++;
-                }
-            }
-            break;
-        case 0:
-            cout << "Программа завершена.\n";
-            break;
-        default:
-            cout << "Неверный выбор! Попробуйте ещё раз.\n";
-            break;
-        }
-    } while (choice != 0);
 
-    return 0;
-}*/
+	for (Weapon* weapon : weapons) {
+		cout << "Damage: " << weapon->shoot() << endl;
+	}
+
+
+	for (Weapon* weapon : weapons) {
+		delete weapon;
+	}
+
+	return 0;
+}
+*/
