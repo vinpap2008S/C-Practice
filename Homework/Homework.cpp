@@ -3,7 +3,7 @@
 #include <string>
 
 using namespace std;
-
+/*
 int main() {
     setlocale(LC_ALL, "ru");
     list<string> wordsOrNumbers;
@@ -23,3 +23,4 @@ int main() {
 
     return 0;
 }
+*/
