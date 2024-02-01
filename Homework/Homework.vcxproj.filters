@@ -23,7 +23,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="List.h">
+    <ClInclude Include="algebra.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
   </ItemGroup>
