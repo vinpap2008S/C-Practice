@@ -2,6 +2,8 @@
 #include <cassert> 
 #include <cmath> 
 
+using namespace std;
+
 struct Equation
 {
 	double a, b, c;
@@ -44,8 +46,8 @@ Equation* input_acvation_x()
 	return solve_system_of_linear_equations(en_1, en_2);
 }
 
-using namespace std;
 
+/*
 int main()
 {
 	try {
@@ -61,3 +63,4 @@ int main()
 	}
 	
 }
+*/
