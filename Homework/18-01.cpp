@@ -27,7 +27,7 @@ Equation* solve_system_of_linear_equations(Equation* en_1, Equation* en_2) {
 	en_1->x2 = (en_1->a * en_2->c - en_2->a * en_1->c) / determinant;
 	return en_1;
 }
-Equation* input_acvation_x()
+static Equation* input_acvation_x()
 {
 	Equation* en_1 = new Equation;
 	Equation* en_2 = new Equation;
