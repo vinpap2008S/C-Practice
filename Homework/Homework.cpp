@@ -1,34 +1,98 @@
-﻿#include <string>
-#include <iostream>
-#include <filesystem>
+﻿#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
 
 using namespace std;
 
-namespace fs = filesystem;
+class Spravochnik {
+public:
+    struct Record {
+        string name;
+        string owner;
+        string phone;
+        string address;
+        string activity;
+    };
 
-int main() {
-    string directoryPath;
+    vector<Record> records;
 
-    cout << "Введите путь к директории: ";
-    cin >> directoryPath;
-
-    try {
-        uintmax_t totalSize = 0;
-
-        for (const auto& entry : fs::recursive_directory_iterator(directoryPath)) {
-            if (fs::is_regular_file(entry)) {
-                totalSize += fs::file_size(entry);
+    void searchByName(const string& name) {
+        for (const auto& record : records) {
+            if (record.name == name) {
+                displayRecord(record);
             }
         }
+    }
 
-        cout << "Объем, занимаемый директорией: " << totalSize << " байт" << endl;
+    void searchByOwner(const string& owner) {
+        for (const auto& record : records) {
+            if (record.owner == owner) {
+                displayRecord(record);
+            }
+        }
     }
-    catch (const fs::filesystem_error& e) {
-        cerr << "Ошибка файловой системы: " << e.what() << endl;
+
+    void searchByPhone(const string& phone) {
+        for (const auto& record : records) {
+            if (record.phone == phone) {
+                displayRecord(record);
+            }
+        }
     }
-    catch (...) {
-        cerr << "Произошла неизвестная ошибка" << endl;
+
+    void searchByActivity(const string& activity) {
+        for (const auto& record : records) {
+            if (record.activity == activity) {
+                displayRecord(record);
+            }
+        }
     }
+
+    void displayAllRecords() {
+        for (const auto& record : records) {
+            displayRecord(record);
+        }
+    }
+
+    void addRecord(const Record& newRecord) {
+        records.push_back(newRecord);
+    }
+
+    void saveToFile() {
+        ofstream file("spravochnik.txt");
+        if (file.is_open()) {
+            for (const auto& record : records) {
+                file << record.name << "," << record.owner << "," << record.phone << "," << record.address << "," << record.activity << "\n";
+            }
+            file.close();
+        }
+        else {
+            cerr << "Unable to open file for writing." << endl;
+        }
+    }
+
+private:
+    void displayRecord(const Record& record) {
+        cout << "Name: " << record.name << endl;
+        cout << "Owner: " << record.owner << endl;
+        cout << "Phone: " << record.phone << endl;
+        cout << "Address: " << record.address << endl;
+        cout << "Activity: " << record.activity << endl;
+        cout << "---------------------------------" << endl;
+    }
+};
+
+int main() {
+    Spravochnik spravochnik;
+
+    Spravochnik::Record newRecord = { "FirmName", "OwnerName", "1234567890", "Address", "Activity" };
+    spravochnik.addRecord(newRecord);
+
+    spravochnik.searchByName("FirmName");
+    spravochnik.displayAllRecords();
+
+    spravochnik.saveToFile();
 
     return 0;
 }
