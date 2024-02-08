@@ -1,66 +1,50 @@
-#include <iostream> 
-#include <cassert> 
-#include <cmath> 
+#include <iostream>
+#include <memory>
+#include <vector>
+#include <string>
 
 using namespace std;
 
-struct Equation
-{
-	double a, b, c;
-	double x1, x2;
+class Weapon {
+public:
+    Weapon(const string& name) : name(name) {}
+
+    void attack() {
+        cout << name << " attacks!" << endl;
+    }
+
+private:
+    string name;
 };
 
-Equation* solve_system_of_linear_equations(Equation* en_1, Equation* en_2) {
+class Monster {
+public:
+    Monster(const string& name) : name(name) {}
 
-	double determinant = en_1->a * en_2->b - en_2->a * en_1->b;
-	if (determinant == 0) {
-		if (en_1->c == en_2->c) {
-			throw(1);
-		}
-		else
-		{
-			throw(2);
-		}
-		return en_1;
-	}
-	en_1->x1 = (en_1->c * en_2->b - en_2->c * en_1->b) / determinant;
-	en_1->x2 = (en_1->a * en_2->c - en_2->a * en_1->c) / determinant;
-	return en_1;
-}
-static Equation* input_acvation_x()
-{
-	Equation* en_1 = new Equation;
-	Equation* en_2 = new Equation;
-	cout << "Enter first_1 argument: ";
-	cin >> en_1->a;
-	cout << "Enter second_1 argument: ";
-	cin >> en_1->b;
-	cout << "Enter thrist_1 argument: ";
-	cin >> en_1->c;
-	cout << "Enter first_2 argument: ";
-	cin >> en_2->a;
-	cout << "Enter second_2 argument: ";
-	cin >> en_2->b;
-	cout << "Enter thrist_2 argument: ";
-	cin >> en_2->c;
-	return solve_system_of_linear_equations(en_1, en_2);
-}
+    void equipWeapon(unique_ptr<Weapon> weapon) {
+        weapons.push_back(move(weapon));
+    }
 
+    void attack() {
+        for (const auto& weapon : weapons) {
+            weapon->attack();
+        }
+    }
 
-/*
-int main()
-{
-	try {
-		Equation* re = input_acvation_x();
-		cout << "x1 = " << re->x1 << endl;
-		cout << "x2 = " << re->x2 << endl;
-	}
-	catch (int h) {
-		if(h == 1)
-			cout << "==" << endl;
-		if (h == 2)
-			cout << "--" << endl;
-	}
-	
+private:
+    string name;
+    vector<unique_ptr<Weapon>> weapons;
+};
+
+int main() {
+    unique_ptr<Weapon> sword = make_unique<Weapon>("Sword");
+    unique_ptr<Weapon> axe = make_unique<Weapon>("Axe");
+
+    Monster monster("Dragon");
+    monster.equipWeapon(move(sword));
+    monster.equipWeapon(move(axe));
+
+    monster.attack();
+
+    return 0;
 }
-*/

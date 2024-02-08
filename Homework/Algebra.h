@@ -1,72 +1,106 @@
-#include <iostream> 
-namespace  school_algebra {
-	struct Equation
-	{
-		double a, b, c;
-		double x1, x2;
-	};
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <map>
+#include <vector>
+#include <ctime>
 
+using namespace std;
 
-	Equation* calculateEquation(Equation* en)
-	{
-		double D = en->b * en->b - 4 * en->a * en->c;
-		Equation* re = new Equation;
-		if (D <= 0)
-		{
-			throw(false);
-		}
-		re->x1 = (-en->b - sqrt(D)) / (2 * en->a);
-		re->x2 = (-en->b + sqrt(D)) / (2 * en->a);
-		return re;
-	}
+class Dictionary {
+private:
+    map<string, vector<string>> words;
 
-	Equation* input_acvation()
-	{
-		Equation* en = new Equation;
-		cout << "Enter first argument: ";
-		cin >> en->a;
-		cout << "Enter second argument: ";
-		cin >> en->b;
-		cout << "Enter thrist argument: ";
-		cin >> en->c;
-		return en;
-	}
+public:
+    void addWord(const string& word, const vector<string>& synonyms) {
+        words[word] = synonyms;
+    }
 
+    vector<string> translate(const string& word) {
+        if (words.find(word) != words.end()) {
+            return words[word];
+        }
+        return { "Translation not found" };
+    }
 
-	Equation* solve_system_of_linear_equations(Equation* en_1, Equation* en_2) {
+    void randomTest(int N) {
+        vector<string> testedWords;
+        srand(time(0));
 
-		double determinant = en_1->a * en_2->b - en_2->a * en_1->b;
-		if (determinant == 0) {
-			if (en_1->c == en_2->c) {
-				throw(1);
-			}
-			else
-			{
-				throw(2);
-			}
-			return en_1;
-		}
-		en_1->x1 = (en_1->c * en_2->b - en_2->c * en_1->b) / determinant;
-		en_1->x2 = (en_1->a * en_2->c - en_2->a * en_1->c) / determinant;
-		return en_1;
-	}
-	Equation* input_acvation_x()
-	{
-		Equation* en_1 = new Equation;
-		Equation* en_2 = new Equation;
-		cout << "Enter first_1 argument: ";
-		cin >> en_1->a;
-		cout << "Enter second_1 argument: ";
-		cin >> en_1->b;
-		cout << "Enter thrist_1 argument: ";
-		cin >> en_1->c;
-		cout << "Enter first_2 argument: ";
-		cin >> en_2->a;
-		cout << "Enter second_2 argument: ";
-		cin >> en_2->b;
-		cout << "Enter thrist_2 argument: ";
-		cin >> en_2->c;
-		return solve_system_of_linear_equations(en_1, en_2);
-	}
+        ofstream testFile("test_results.txt");
+        if (testFile.is_open()) {
+            testFile << "Tested Words:\n";
 
+            for (int i = 0; i < N; ++i) {
+                int randomIndex = rand() % words.size();
+                auto it = next(words.begin(), randomIndex);
+                string word = it->first;
+
+                testFile << word << "\n";
+                testedWords.push_back(word);
+            }
+
+            testFile << "\nResults:\n";
+            for (const auto& word : testedWords) {
+                testFile << "Word: " << word << "\n";
+                testFile << "Translation: ";
+                for (const auto& synonym : translate(word)) {
+                    testFile << synonym << ", ";
+                }
+                testFile << "\n\n";
+            }
+
+            testFile.close();
+        }
+        else {
+            cerr << "Unable to open file for writing." << endl;
+        }
+    }
+};
+
+int main() {
+    Dictionary dict;
+
+    // Чтение слов и синонимов из файла
+    ifstream file("words.txt");
+    if (file.is_open()) {
+        string line;
+        while (getline(file, line)) {
+            string word;
+            vector<string> synonyms;
+
+            size_t pos = line.find(':');
+            if (pos != string::npos) {
+                word = line.substr(0, pos);
+                string synonymsStr = line.substr(pos + 1);
+                size_t start = 0, end = synonymsStr.find(',');
+                while (end != string::npos) {
+                    synonyms.push_back(synonymsStr.substr(start, end - start));
+                    start = end + 1;
+                    end = synonymsStr.find(',', start);
+                }
+                synonyms.push_back(synonymsStr.substr(start));
+            }
+
+            dict.addWord(word, synonyms);
+        }
+        file.close();
+    }
+    else {
+        cerr << "Unable to open file with words." << endl;
+        return 1;
+    }
+
+    // Перевод слова
+    vector<string> translation = dict.translate("apple");
+    cout << "Translation of 'apple': ";
+    for (const auto& synonym : translation) {
+        cout << synonym << ", ";
+    }
+    cout << endl;
+
+    // Проведение теста и запись результатов в файл
+    dict.randomTest(3);
+
+    return 0;
 }
