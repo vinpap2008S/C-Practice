@@ -35,7 +35,7 @@ private:
     string name;
     vector<unique_ptr<Weapon>> weapons;
 };
-
+/*
 int main() {
     unique_ptr<Weapon> sword = make_unique<Weapon>("Sword");
     unique_ptr<Weapon> axe = make_unique<Weapon>("Axe");
@@ -47,4 +47,4 @@ int main() {
     monster.attack();
 
     return 0;
-}
+}*/
